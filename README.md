@@ -2,6 +2,12 @@
 
 Client-side tool to flatten JSON into analysis-friendly CSVs (with child tables) and back. No uploads; everything runs in the browser.
 
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20the%20lab-ff5e5b?logo=kofi&logoColor=white)](https://ko-fi.com/gundalf101)
+
+If this project saved you time, feel free to support my experiments: https://ko-fi.com/gundalf101
+
+This project will remain free and open-source — support helps fund experimentation and maintenance.
+
 ## Features
 - JSON → CSV with nested object flattening and array-of-objects normalization into child tables (`_parent_row_id`, `_index`).
 - Optional explode for primitive arrays; keep as strings otherwise.
