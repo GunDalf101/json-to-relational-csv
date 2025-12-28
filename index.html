@@ -324,6 +324,26 @@
       font-size: 12px;
     }
 
+    /* Ko-fi badge styling */
+    .kofi {
+      margin-right: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+
+    .kofi img {
+      height: 28px;
+      display: block;
+    }
+
+    .kofi:hover img,
+    .kofi:focus img {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
     .muted {
       color: var(--muted);
     }
@@ -410,10 +430,10 @@
         Perfect for exporting API responses to Excel, BigQuery, or PostgreSQL.
       </div>
       <div class="controls" style="justify-content: flex-start; padding: 10px 0 0;">
-          <a href='https://ko-fi.com/gundalf101' target='_blank' rel='noopener noreferrer' onclick="plausible('KofiClick')" style='margin-right:8px; text-decoration:none;'>
-            <img height='36' style='border:0;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' alt='Buy Me a Coffee at ko-fi.com' />
-          </a>
-        <button id="advanced-toggle" class="secondary small" type="button" style="background:#111827;border-color:#22c55e;color:#e5e7eb;">Show advanced options</button>
+        <a href="https://ko-fi.com/gundalf101" target="_blank" rel="noopener" onclick="plausible('KofiClick')" style="text-decoration:none;">
+          <button class="secondary small" type="button">☕ Fuel the lab</button>
+        </a>
+        <button id="advanced-toggle" class="secondary small" type="button" style="background:#111827;border-color:#22c55e;color:#e5e7eb;" onclick="plausible('AdvancedToggle')">Show advanced options</button>
       </div>
     </header>
 
