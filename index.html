@@ -4,18 +4,90 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Convert complex API JSON into clean, relational CSV tables. Privacy-first, in-browser JSON to CSV exporter for developers and data teams." />
-  <title>JSON to Relational CSV Converter</title>
+  <link rel="canonical" href="https://json-to-relational-csv.com/" />
+  <meta property="og:title" content="JSON to Relational CSV Converter (Privacy-first)" />
+  <meta property="og:description" content="Convert complex API JSON into clean relational CSV tables — fully in-browser." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://json-to-relational-csv.com/" />
+  <meta property="og:image" content="https://json-to-relational-csv.com/images/og.png" />
+  <title>Wizard Tools • JSON to Relational CSV Converter</title>
   <meta name="theme-color" content="#0f172a" />
 
   <link rel="icon" href="/images/image.png" />
   <link rel="manifest" href="manifest.json" />
-    <!-- Privacy-friendly analytics by Plausible -->
-  <script async src="https://plausible.io/js/pa-WsZ_KX1FVSSosOYDA41S-.js"></script>
-  <script>
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-    plausible.init()
-  </script>
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script defer data-domain="json-to-relational-csv.com" src="https://plausible.io/js/script.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4160544759027026" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "JSON to Relational CSV Converter",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "url": "https://json-to-relational-csv.com/",
+      "image": "https://json-to-relational-csv.com/images/og.png",
+      "description": "Convert complex API JSON into relational CSV tables in-browser, with child tables and schema exports.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Wizard Tools",
+        "url": "https://json-to-relational-csv.com/"
+      }
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is my data uploaded?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All parsing and conversions run locally in your browser. Only Plausible (cookieless) and AdSense (ads cookies) load externally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are child tables built?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Arrays of objects become child tables with _parent_row_id + _index. Primitive arrays can be exploded into value rows. Mixed arrays are stringified to stay lossless."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I import into Postgres or BigQuery?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Download CSVs plus SQL DDL; main uses _row_id; child tables use (_parent_row_id, _index) with foreign keys back to main."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you support CSV to JSON?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. CSV to JSON with optional unflattening of dot-path headers to rebuild nested objects."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What about delimiters?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can choose comma, semicolon, or tab delimiters. BOM is stripped automatically."
+          }
+        }
+      ]
+    }
+  </script>
   <style>
     :root {
       --bg: #0f172a;
@@ -40,20 +112,221 @@
 
     body {
       margin: 0;
-      padding: 24px 20px 32px;
-      background: var(--bg);
+      padding: 28px 18px 40px;
+      background: radial-gradient(circle at 20% 20%, #122136, #0f172a 55%, #0b1220 100%);
       color: var(--text);
       font-family: var(--sans);
       min-height: 100vh;
-      overflow: hidden;
+      overflow: auto;
     }
 
     .page {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      height: calc(100vh - 64px);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      gap: 14px;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #7dd3fc;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #0f172aee;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(6px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0b1220;
+      border: 1px solid var(--border);
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tagline {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mobile-toggle {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      background: #0b1220;
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .nav-link,
+    .nav-button {
+      border: 1px solid #253248;
+      background: #0d1524;
+      color: var(--text);
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .nav-link:hover,
+    .nav-button:hover {
+      border-color: #38bdf8aa;
+      background: #111c2f;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px;
+      background: #0e182a;
+      border: 1px solid #243047;
+      border-radius: 12px;
+      min-width: 200px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+      z-index: 30;
+    }
+
+    .dropdown.open .dropdown-menu {
+      display: flex;
+    }
+
+    .dropdown-menu a {
+      padding: 9px 11px;
+      border-radius: 10px;
+      color: var(--text);
+      border: 1px solid transparent;
+    }
+
+    .dropdown-menu a:hover {
+      background: #111f33;
+      border-color: #243047;
+    }
+
+    .content-section {
+      border: 1px solid #1f2937;
+      background: #0f172a;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+    }
+
+    .section-card {
+      background: #0d1626;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 12px 28px rgba(0,0,0,0.25);
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .ad-slot {
+      border: 1px dashed var(--border);
+      background: #0b1220;
+      border-radius: 10px;
+      padding: 8px;
+      display: block;
+      text-align: center;
+      min-height: 120px;
+    }
+
+    .list-tight {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
     }
 
     h1 {
@@ -69,11 +342,11 @@
     }
 
     .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      background: #0f172a;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
       padding: 16px;
-      box-shadow: none;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
       flex: 1;
       max-height: calc(100vh - 160px);
       overflow: auto;
@@ -122,13 +395,14 @@
     }
 
     .panel {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 14px;
       background: #0d1626;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 10px 26px rgba(0, 0, 0, 0.25);
     }
 
     label {
@@ -143,15 +417,16 @@
     .textarea {
       width: 100%;
       min-height: 240px;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
       background: #0b1220;
       color: var(--text);
       font-family: var(--mono);
       font-size: 13px;
       resize: vertical;
-      transition: border-color 0.12s ease;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
     }
 
     .textarea:focus {
@@ -172,35 +447,37 @@
     button,
     .file-label {
       appearance: none;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 11px 15px;
       background: #0f172a;
       color: var(--text);
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: border-color 0.12s ease, background 0.12s ease;
+      transition: transform 0.12s ease, box-shadow 0.14s ease, filter 0.14s ease;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
     }
 
     button:hover,
     .file-label:hover {
-      border-color: #22c55e80;
+      transform: translateY(-1px);
+      filter: brightness(1.04);
     }
 
     button.primary {
-      background: #22c55e;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
       border-color: #22c55e;
       color: #052e16;
-      box-shadow: none;
+      box-shadow: 0 12px 26px rgba(34, 197, 94, 0.25);
     }
 
     button.primary:hover {
-      background: #16a34a;
-      border-color: #16a34a;
+      background: linear-gradient(135deg, #16a34a, #15803d);
     }
 
     button.secondary {
       background: #111827;
+      border-color: #1f2937;
     }
 
     button:disabled {
@@ -414,32 +691,124 @@
       h1 {
         font-size: 22px;
       }
+
+      .top-nav {
+        position: sticky;
+        top: 0;
+        gap: 10px;
+      }
+
+      .mobile-toggle {
+        display: inline-flex;
+        margin-left: auto;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .top-nav.open .nav-links {
+        display: flex;
+      }
+
+      .dropdown {
+        width: 100%;
+      }
+
+      .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        width: 100%;
+        margin-top: 4px;
+      }
+
+      .dropdown-menu a {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
+  <main class="page" id="main-content">
+    <nav class="top-nav" aria-label="Primary navigation">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <img src="/images/image.png" alt="Wizard Tools logo" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Wizard Tools</span>
+          <span class="brand-tagline">JSON → Relational CSV</span>
+        </div>
+      </div>
+      <button class="nav-button mobile-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">☰ Menu</button>
+      <div class="nav-links">
+        <div class="dropdown">
+          <button class="nav-button" type="button">Docs ▾</button>
+          <div class="dropdown-menu" role="menu">
+            <a href="docs.html#features" role="menuitem">Features</a>
+            <a href="docs.html#how-it-works" role="menuitem">How it works</a>
+            <a href="docs.html#examples" role="menuitem">Examples</a>
+            <a href="docs.html#faq" role="menuitem">FAQ</a>
+            <a href="docs.html#schema" role="menuitem">Schema notes</a>
+            <a href="privacy.html" role="menuitem">Privacy</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="nav-button" type="button">Tools ▾</button>
+          <div class="dropdown-menu" role="menu">
+            <a href="index.html#converter" role="menuitem">JSON ↔ CSV Converter</a>
+          </div>
+        </div>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="privacy.html">Privacy</a>
+        <a class="nav-link" href="terms.html">Terms</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+      </div>
+    </nav>
+
+    <header id="home">
       <h1>JSON to Relational CSV Converter</h1>
-      <p class="subtitle">Convert complex API JSON into clean, relational CSV tables — fully in-browser.</p>
+      <p class="subtitle">Convert complex API JSON into clean, relational CSV tables — fully in-browser and privacy-first.</p>
       <div class="badges">
         <span class="badge">No uploads</span>
         <span class="badge">Vanilla JS</span>
         <span class="badge">Copy / Download</span>
+        <span class="badge">Built for data teams</span>
       </div>
       <h2 style="margin:10px 0 0; font-weight:600; font-size:18px;">Convert API JSON to relational CSV tables</h2>
       <div class="muted" style="margin-top: 6px; font-size: 13px;">
-        Perfect for exporting API responses to Excel, BigQuery, or PostgreSQL.
+        Perfect for exporting API responses to Excel, BigQuery, PostgreSQL, and BI tools — without sending data to a server.
       </div>
       <div class="controls" style="justify-content: flex-start; padding: 10px 0 0;">
         <a href="https://ko-fi.com/gundalf101" target="_blank" rel="noopener" onclick="plausible('KofiClick')" style="text-decoration:none;">
           <button class="secondary small" type="button">☕ Fuel the lab</button>
         </a>
-        <button id="advanced-toggle" class="secondary small" type="button" style="background:#111827;border-color:#22c55e;color:#e5e7eb;" onclick="plausible('AdvancedToggle')">Show advanced options</button>
       </div>
     </header>
 
-    <section class="card" aria-label="Conversion panel">
+    <section class="content-section" aria-label="Ad banner">
+      <div class="muted" style="font-size: 12px;">Sponsored</div>
+      <ins
+        class="adsbygoogle ad-slot"
+        style="display:block"
+        data-ad-client="ca-pub-4160544759027026"
+        data-ad-slot="1234567890"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </section>
+
+    <section class="card" id="converter" aria-label="Conversion panel">
+      <div class="controls" style="justify-content: flex-end; padding: 0 0 8px;">
+        <button id="advanced-toggle" class="secondary small" type="button" style="background:#111827;border-color:#22c55e;color:#e5e7eb;" onclick="plausible('AdvancedToggle')">Show advanced options</button>
+      </div>
       <div class="tabs" role="tablist">
         <button class="tab active" role="tab" aria-selected="true" data-mode="json2csv">
           <span>JSON → CSV</span>
@@ -507,34 +876,120 @@
       <div id="status" class="status" role="status" aria-live="polite"></div>
     </section>
 
-    <section>
-      <h2>Why use a relational JSON to CSV converter?</h2>
-      <p>
-        Most JSON to CSV tools flatten nested data into unreadable columns.
-        This tool preserves relationships by generating relational CSV tables
-        with foreign keys, making the output ready for SQL databases,
-        spreadsheets, and analytics tools.
-      </p>
+    <section class="content-section" id="what-is-relational-csv">
+      <h2 class="section-title">What is “relational CSV”?</h2>
+      <p>Most JSON-to-CSV tools flatten everything into a single sheet, which breaks joins and makes analytics painful. Relational CSV keeps one main table plus child tables for arrays. Each child table carries a foreign key (<code>_parent_row_id</code>) back to the main table so you can join in SQL or spreadsheets.</p>
+      <p>This preserves shape and intent: arrays of objects become rows; nested objects flatten into columns; irregular or mixed arrays are stringified instead of silently dropped.</p>
     </section>
 
-    <details class="docs">
-      <summary style="cursor: pointer; color: var(--text);">Usage & schema tips</summary>
-      <div style="margin-top: 8px;">
-        <ul style="margin: 0 0 8px 16px; padding: 0; list-style: disc;">
-          <li>JSON→CSV: nested objects flatten; arrays of objects become child tables with <code>_parent_row_id</code> + <code>_index</code>.</li>
-          <li>Arrays of primitives can be exploded (toggle) or kept as strings. Dates output ISO strings.</li>
-          <li>CSV→JSON: optional unflatten for dot-path headers; mixed array/object paths warn.</li>
-          <li>Delimiters: comma / semicolon / tab; BOM stripped.</li>
-          <li>ZIP best under ~20MB in-browser.</li>
-        </ul>
-        <strong>Joins</strong>: main PK <code>_row_id</code>; child PK <code>(_parent_row_id, _index)</code>; FKs back to <code>main._row_id</code>.
+    <section class="content-section" id="child-tables">
+      <h2 class="section-title">How child tables work</h2>
+      <p>Arrays of objects become their own tables. Every row gets <code>_parent_row_id</code> (the main row it belongs to) and <code>_index</code> to preserve order. Primitive arrays can optionally explode into a simple two-column table (<code>_parent_row_id</code>, <code>value</code>). This mirrors how you'd model one-to-many relations in SQL.</p>
+      <p>You can also prefix child table names or replace dots with underscores for warehouse-safe identifiers.</p>
+    </section>
+
+    <section class="content-section" id="import-warehouses">
+      <h2 class="section-title">Import into Postgres, BigQuery, or Sheets</h2>
+      <p>Download the main/child CSVs, plus SQL DDL that sets primary keys and foreign keys. In warehouses, load the CSVs, then run the generated <code>schema.sql</code>. In Sheets/Excel, use <code>_row_id</code> and <code>_parent_row_id</code> to join with VLOOKUP/XLOOKUP or pivot tables.</p>
+      <ul class="list-tight">
+        <li>Main PK: <code>_row_id</code></li>
+        <li>Child PK: <code>(_parent_row_id, _index)</code></li>
+        <li>FKs: <code>_parent_row_id → main._row_id</code></li>
+      </ul>
+    </section>
+
+    <section class="content-section" aria-label="Sponsored placement">
+      <div class="muted" style="font-size: 12px;">Sponsored</div>
+      <ins
+        class="adsbygoogle ad-slot"
+        style="display:block"
+        data-ad-client="ca-pub-4160544759027026"
+        data-ad-slot="1234567892"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </section>
+
+    <section class="content-section" id="examples">
+      <h2 class="section-title">Examples</h2>
+      <div class="section-grid">
+        <div class="section-card">
+          <strong>JSON → relational CSV</strong>
+          <div class="muted"><code>[{ "id": "ord-1", "items": [{ "sku": "A1", "qty": 2 }, { "sku": "B2", "qty": 1 }], "tags": ["vip","online"] }]</code></div>
+          <div class="muted">Produces main.csv with id, tags, and items.csv with <code>_parent_row_id</code>, <code>_index</code>, <code>sku</code>, <code>qty</code>. Tags can explode into a tag_values table if enabled.</div>
+        </div>
+        <div class="section-card">
+          <strong>CSV → JSON</strong>
+          <div class="muted"><code>id,team.0,team.1,metrics.total,metrics.daily.0</code> unflattens back to objects when you tick “Unflatten”. Mixed paths are coerced and flagged as warnings.</div>
+        </div>
       </div>
-    </details>
+    </section>
+
+    <section class="content-section" id="faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="section-grid">
+        <div class="section-card">
+          <strong>Is my data uploaded?</strong>
+          <div class="muted">No. Everything runs in-browser. Only Plausible (cookieless) and AdSense (ads cookies) load externally.</div>
+        </div>
+        <div class="section-card">
+          <strong>Do you support CSV → JSON?</strong>
+          <div class="muted">Yes. Optional unflatten rebuilds nested objects from dot-path headers.</div>
+        </div>
+        <div class="section-card">
+          <strong>Can I use tabs or semicolons?</strong>
+          <div class="muted">Yes—choose comma, semicolon, or tab. BOM is stripped automatically.</div>
+        </div>
+        <div class="section-card">
+          <strong>How big can I go?</strong>
+          <div class="muted">Best under ~20MB for in-browser ZIP. For larger sets, process chunks or sample.</div>
+        </div>
+        <div class="section-card">
+          <strong>Can I change table names?</strong>
+          <div class="muted">You can add a child table prefix and replace dots with underscores for safer identifiers.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Documentation & policies</h2>
+      <div class="section-grid">
+        <div class="section-card">
+          <strong>Docs & schema</strong>
+          <div class="muted">Features, how it works, schema notes, examples, and FAQ.</div>
+          <a class="nav-link" href="docs.html">Open docs</a>
+        </div>
+        <div class="section-card">
+          <strong>Privacy & terms</strong>
+          <div class="muted">Privacy policy (Plausible + AdSense) and Terms of Service.</div>
+          <a class="nav-link" href="privacy.html">Privacy policy</a>
+          <a class="nav-link" href="terms.html">Terms of Service</a>
+        </div>
+        <div class="section-card">
+          <strong>About & contact</strong>
+          <div class="muted">Who built it, changelog, and how to reach out.</div>
+          <a class="nav-link" href="about.html">About & changelog</a>
+          <a class="nav-link" href="contact.html">Contact</a>
+        </div>
+      </div>
+    </section>
 
     <footer class="muted" style="margin-top: 12px; font-size: 13px;">
-      Built for developers. Privacy-first. All processing happens locally in your browser.
+      <div class="footer-links">
+        <a href="docs.html#features">Features</a>
+        <a href="docs.html#faq">FAQ</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.linkedin.com/in/bennanimouad" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div style="margin-top: 6px;">Built for developers. Privacy-first. All processing stays in your browser.</div>
     </footer>
-  </div>
+  </main>
 
   <script>
     (function () {
@@ -574,6 +1029,52 @@
         advancedToggle: document.getElementById("advanced-toggle"),
         advancedItems: document.querySelectorAll(".advanced-item"),
       };
+
+      const topNav = document.querySelector(".top-nav");
+      const mobileToggle = document.querySelector(".mobile-toggle");
+      const navLinksContainer = document.querySelector(".nav-links");
+      const navDropdowns = document.querySelectorAll(".dropdown");
+
+      // Prevent clicks inside the nav stack from bubbling and closing the menu
+      navLinksContainer?.addEventListener("click", (e) => e.stopPropagation());
+
+      if (mobileToggle && topNav) {
+        mobileToggle.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isOpen = topNav.classList.toggle("open");
+          mobileToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+      }
+
+      navDropdowns.forEach((dropdown) => {
+        const trigger = dropdown.querySelector(".nav-button");
+        trigger?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isOpen = dropdown.classList.contains("open");
+          navDropdowns.forEach((d) => d.classList.remove("open"));
+          if (!isOpen) dropdown.classList.add("open");
+        });
+        dropdown.querySelectorAll("a").forEach((link) =>
+          link.addEventListener("click", () => {
+            dropdown.classList.remove("open");
+            topNav?.classList.remove("open");
+            mobileToggle?.setAttribute("aria-expanded", "false");
+          })
+        );
+      });
+
+      document.querySelectorAll(".nav-link").forEach((link) =>
+        link.addEventListener("click", () => {
+          topNav?.classList.remove("open");
+          mobileToggle?.setAttribute("aria-expanded", "false");
+        })
+      );
+
+      document.addEventListener("click", () => {
+        navDropdowns.forEach((d) => d.classList.remove("open"));
+        topNav?.classList.remove("open");
+        mobileToggle?.setAttribute("aria-expanded", "false");
+      });
 
       const placeholders = {
         json2csv: {

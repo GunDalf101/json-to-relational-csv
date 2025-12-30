@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service • Wizard Tools</title>
+  <meta name="description" content="Terms of Service for the JSON to Relational CSV Converter." />
+  <link rel="icon" href="/images/image.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script defer data-domain="json-to-relational-csv.com" src="https://plausible.io/js/script.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4160544759027026" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --accent: #22c55e;
+      --accent-2: #38bdf8;
+      --border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --radius: 12px;
+      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 28px 18px 40px;
+      background: radial-gradient(circle at 20% 20%, #122136, #0f172a 55%, #0b1220 100%);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #7dd3fc;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #0f172aee;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(6px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0b1220;
+      border: 1px solid var(--border);
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tagline {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mobile-toggle {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      background: #0b1220;
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .nav-link,
+    .nav-button {
+      border: 1px solid #253248;
+      background: #0d1524;
+      color: var(--text);
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .nav-link:hover,
+    .nav-button:hover {
+      border-color: #38bdf8aa;
+      background: #111c2f;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px;
+      background: #0e182a;
+      border: 1px solid #243047;
+      border-radius: 12px;
+      min-width: 200px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+      z-index: 30;
+    }
+
+    .dropdown.open .dropdown-menu {
+      display: flex;
+    }
+
+    .dropdown-menu a {
+      padding: 9px 11px;
+      border-radius: 10px;
+      color: var(--text);
+      border: 1px solid transparent;
+    }
+
+    .dropdown-menu a:hover {
+      background: #111f33;
+      border-color: #243047;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+    }
+
+    p.subtitle {
+      margin: 0 0 8px;
+      color: var(--muted);
+    }
+
+    .content-section {
+      border: 1px solid #1f2937;
+      background: #0f172a;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .list-tight {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .ad-slot {
+      border: 1px dashed var(--border);
+      background: #0b1220;
+      border-radius: 10px;
+      padding: 8px;
+      display: block;
+      text-align: center;
+      min-height: 120px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 20px 14px 28px;
+      }
+
+      .top-nav {
+        position: sticky;
+        top: 0;
+        gap: 10px;
+      }
+
+      .mobile-toggle {
+        display: inline-flex;
+        margin-left: auto;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .top-nav.open .nav-links {
+        display: flex;
+      }
+
+      .dropdown {
+        width: 100%;
+      }
+
+      .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        width: 100%;
+        margin-top: 4px;
+      }
+
+      .dropdown-menu a {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="main-content">
+    <nav class="top-nav" aria-label="Primary navigation">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <img src="/images/image.png" alt="Wizard Tools logo" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Wizard Tools</span>
+          <span class="brand-tagline">Terms of Service</span>
+        </div>
+      </div>
+      <button class="nav-button mobile-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">☰ Menu</button>
+      <div class="nav-links">
+        <div class="dropdown">
+          <button class="nav-button" type="button">Docs ▾</button>
+          <div class="dropdown-menu" role="menu">
+            <a href="docs.html#features" role="menuitem">Features</a>
+            <a href="docs.html#how-it-works" role="menuitem">How it works</a>
+            <a href="docs.html#examples" role="menuitem">Examples</a>
+            <a href="docs.html#faq" role="menuitem">FAQ</a>
+            <a href="docs.html#schema" role="menuitem">Schema notes</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="nav-button" type="button">Tools ▾</button>
+          <div class="dropdown-menu" role="menu">
+            <a href="index.html#converter" role="menuitem">JSON ↔ CSV Converter</a>
+          </div>
+        </div>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="privacy.html">Privacy</a>
+        <a class="nav-link" href="terms.html">Terms</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+      </div>
+    </nav>
+
+    <header>
+      <h1>Terms of Service</h1>
+      <p class="subtitle">Last updated: Dec 30, 2025</p>
+    </header>
+
+    <section class="content-section" aria-label="Sponsored placement">
+      <div class="muted" style="font-size: 12px;">Sponsored</div>
+      <ins
+        class="adsbygoogle ad-slot"
+        style="display:block"
+        data-ad-client="ca-pub-4160544759027026"
+        data-ad-slot="4234567890"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Use of the service</h2>
+      <ul class="list-tight">
+        <li>This tool converts JSON/CSV in-browser; you are responsible for the data you process.</li>
+        <li>Do not use the service for illegal, harmful, or sensitive data that your policies prohibit.</li>
+        <li>Browser performance limits apply; very large payloads may require sampling.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">No warranties</h2>
+      <ul class="list-tight">
+        <li>The tool is provided “as is” without warranties of any kind.</li>
+        <li>No guarantees of accuracy, availability, or fitness for a particular purpose.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Liability</h2>
+      <ul class="list-tight">
+        <li>To the maximum extent permitted by law, the creator is not liable for any damages or data loss arising from use of the tool.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Changes</h2>
+      <ul class="list-tight">
+        <li>Features and these terms may change over time; continued use means acceptance of updates.</li>
+        <li>Changelog is published on the About page.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Ads and monetization</h2>
+      <ul class="list-tight">
+        <li>Google AdSense is used to keep the tool free; cookies originate from AdSense only.</li>
+        <li>See the Privacy Policy for details on advertising and data handling.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Contact</h2>
+      <div class="muted">Email: <a href="mailto:mouadgaming3@gmail.com">mouadgaming3@gmail.com</a></div>
+    </section>
+
+    <footer>
+      <div class="footer-links">
+        <a href="index.html">Converter</a>
+        <a href="docs.html#features">Features</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div style="margin-top: 6px;">Built for developers. Privacy-first. All processing stays in your browser.</div>
+    </footer>
+  </main>
+
+  <script>
+    const topNav = document.querySelector(".top-nav");
+    const mobileToggle = document.querySelector(".mobile-toggle");
+    const navLinksContainer = document.querySelector(".nav-links");
+    const navDropdowns = document.querySelectorAll(".dropdown");
+
+    navLinksContainer?.addEventListener("click", (e) => e.stopPropagation());
+
+    if (mobileToggle && topNav) {
+      mobileToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = topNav.classList.toggle("open");
+        mobileToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
+
+    navDropdowns.forEach((dropdown) => {
+      const trigger = dropdown.querySelector(".nav-button");
+      trigger?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains("open");
+        navDropdowns.forEach((d) => d.classList.remove("open"));
+        if (!isOpen) dropdown.classList.add("open");
+      });
+      dropdown.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => {
+          dropdown.classList.remove("open");
+          topNav?.classList.remove("open");
+          mobileToggle?.setAttribute("aria-expanded", "false");
+        })
+      );
+    });
+
+    document.querySelectorAll(".nav-link").forEach((link) =>
+      link.addEventListener("click", () => {
+        topNav?.classList.remove("open");
+        mobileToggle?.setAttribute("aria-expanded", "false");
+      })
+    );
+
+    document.addEventListener("click", () => {
+      navDropdowns.forEach((d) => d.classList.remove("open"));
+      topNav?.classList.remove("open");
+      mobileToggle?.setAttribute("aria-expanded", "false");
+    });
+  </script>
+</body>
+</html>
+
