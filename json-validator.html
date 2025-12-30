@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON Validator & Formatter • Wizard Tools</title>
+  <meta name="description" content="Online JSON validator, formatter, and fixer. Lint, pretty-print, and minify JSON safely in your browser." />
+  <link rel="icon" href="/images/image.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="canonical" href="https://json-to-relational-csv.com/json-validator.html" />
+  <meta property="og:title" content="JSON Validator & Formatter (Privacy-first)" />
+  <meta property="og:description" content="Validate, format, and fix JSON in-browser. No uploads." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://json-to-relational-csv.com/json-validator.html" />
+  <meta property="og:image" content="https://json-to-relational-csv.com/images/og.png" />
+  <script defer data-domain="json-to-relational-csv.com" src="https://plausible.io/js/script.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --accent: #22c55e;
+      --accent-2: #38bdf8;
+      --border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --radius: 14px;
+      --mono: "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 28px 18px 40px;
+      background: radial-gradient(circle at 20% 20%, #122136, #0f172a 55%, #0b1220 100%);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+    main.page {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 100vh;
+    }
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { color: #7dd3fc; }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #0f172aee;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.32);
+      backdrop-filter: blur(6px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-logo { width: 36px; height: 36px; border-radius: 10px; overflow: hidden; background: #0b1220; border: 1px solid #1f2937; display: inline-flex; align-items: center; justify-content: center; }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-text { display: flex; flex-direction: column; gap: 2px; }
+    .brand-name { font-weight: 800; font-size: 16px; letter-spacing: -0.02em; }
+    .brand-tagline { color: var(--muted); font-size: 12px; }
+    .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .mobile-toggle { display: none; align-items: center; gap: 6px; border: 1px solid #1f2937; background: #0b1220; color: var(--text); padding: 8px 12px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    .nav-link, .nav-button {
+      border: 1px solid #253248;
+      background: #0d1524;
+      color: var(--text);
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+    .nav-link:hover, .nav-button:hover { border-color: #38bdf8aa; background: #111c2f; }
+    .dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: calc(100% + 6px); left: 0; display: none; flex-direction: column; gap: 6px;
+      padding: 10px; background: #0e182a; border: 1px solid #243047; border-radius: 12px; min-width: 200px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.38); z-index: 30;
+    }
+    .dropdown.open .dropdown-menu { display: flex; }
+    .dropdown-menu a { padding: 9px 11px; border-radius: 10px; color: var(--text); border: 1px solid transparent; }
+    .dropdown-menu a:hover { background: #111f33; border-color: #243047; }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -0.02em; }
+    p.subtitle { margin: 0 0 10px; color: var(--muted); }
+    .content-section {
+      border: 1px solid #1f2937;
+      background: #0f172a;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.3);
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+    .panel {
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 14px;
+      background: #0d1626;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 10px 26px rgba(0,0,0,0.25);
+    }
+    label { font-size: 14px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+    textarea {
+      width: 100%; min-height: 220px; padding: 13px; border-radius: 12px; border: 1px solid #1f2937;
+      background: #0b1220; color: var(--text); font-family: var(--mono); font-size: 13px;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    textarea:focus { outline: none; border-color: #22c55e80; box-shadow: 0 0 0 1px #22c55e30; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    button {
+      appearance: none; border: 1px solid #1f2937; border-radius: 12px; padding: 11px 15px;
+      background: linear-gradient(135deg, #22c55e, #16a34a); color: #052e16; font-weight: 700; cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.14s ease, filter 0.14s ease;
+      box-shadow: 0 12px 26px rgba(34,197,94,0.25);
+    }
+    button.secondary { background: #111827; color: var(--text); border-color: #1f2937; box-shadow: 0 10px 22px rgba(0,0,0,0.25); }
+    button:hover { transform: translateY(-1px); filter: brightness(1.04); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .status { font-size: 13px; color: var(--muted); min-height: 18px; }
+    @media (max-width: 720px) {
+      body { padding: 22px 14px 32px; }
+      .top-nav { position: sticky; top: 0; }
+      .mobile-toggle { display: inline-flex; margin-left: auto; }
+      .nav-links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 6px; }
+      .top-nav.open .nav-links { display: flex; }
+      .dropdown { width: 100%; }
+      .dropdown-menu { position: static; width: 100%; box-shadow: none; }
+      .dropdown-menu a { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="main-content">
+    <nav class="top-nav" aria-label="Primary navigation">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <img src="/images/image.png" alt="Wizard Tools logo" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Wizard Tools</span>
+          <span class="brand-tagline">JSON Validator</span>
+        </div>
+      </div>
+      <button class="nav-button mobile-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">☰ Menu</button>
+      <div class="nav-links">
+        <div class="dropdown">
+          <button class="nav-button" type="button">Docs ▾</button>
+          <div class="dropdown-menu" role="menu">
+            <a href="docs.html#features" role="menuitem">Features</a>
+            <a href="docs.html#how-it-works" role="menuitem">How it works</a>
+            <a href="docs.html#examples" role="menuitem">Examples</a>
+            <a href="docs.html#schema" role="menuitem">Schema notes</a>
+            <a href="docs.html#faq" role="menuitem">FAQ</a>
+            <a href="privacy.html" role="menuitem">Privacy</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="nav-button" type="button">Tools ▾</button>
+          <div class="dropdown-menu" role="menu">
+            <a href="index.html#converter" role="menuitem">JSON ↔ CSV (main)</a>
+            <a href="json-validator.html" role="menuitem">JSON Validator</a>
+            <a href="json-flatten.html" role="menuitem">Flatten / Unflatten</a>
+            <a href="json-yaml.html" role="menuitem">JSON ↔ YAML</a>
+          </div>
+        </div>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="privacy.html">Privacy</a>
+        <a class="nav-link" href="terms.html">Terms</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+      </div>
+    </nav>
+
+    <header>
+      <h1>JSON Formatter & Validator</h1>
+      <p class="subtitle">Validate, pretty-print, and minify JSON entirely in your browser. No uploads, privacy-first.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="grid">
+        <div class="panel">
+          <label for="input">JSON input</label>
+          <textarea id="input" placeholder='Paste JSON here...'></textarea>
+          <div class="controls">
+            <button id="pretty" class="primary" type="button">Validate & Pretty-print</button>
+            <button id="minify" class="secondary" type="button">Minify</button>
+            <button id="clear" class="secondary" type="button">Clear</button>
+          </div>
+          <div class="status" id="status"></div>
+        </div>
+        <div class="panel">
+          <label for="output">Result</label>
+          <textarea id="output" placeholder="Formatted JSON will appear here..." readonly></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>How this JSON validator works</h2>
+      <p>Paste JSON, click Validate & Pretty-print to lint and format, or Minify to shrink payloads. All parsing runs in-browser—no uploads—so it’s safe for private data. Great for fixing invalid JSON, checking API responses, and cleaning config files.</p>
+      <p class="muted">Keywords: json validator, json lint, fix invalid json, json formatter, pretty print json.</p>
+    </section>
+
+    <footer>
+      <div class="footer-links">
+        <a href="index.html">Converter</a>
+        <a href="json-flatten.html">Flatten</a>
+        <a href="json-yaml.html">JSON ↔ YAML</a>
+        <a href="docs.html">Docs</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <div style="margin-top: 6px;">Built for developers. Privacy-first. All processing stays in your browser.</div>
+    </footer>
+  </main>
+
+  <script>
+    const topNav = document.querySelector(".top-nav");
+    const mobileToggle = document.querySelector(".mobile-toggle");
+    const navLinksContainer = document.querySelector(".nav-links");
+    const navDropdowns = document.querySelectorAll(".dropdown");
+
+    navLinksContainer?.addEventListener("click", (e) => e.stopPropagation());
+    if (mobileToggle && topNav) {
+      mobileToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = topNav.classList.toggle("open");
+        mobileToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
+    navDropdowns.forEach((dropdown) => {
+      const trigger = dropdown.querySelector(".nav-button");
+      trigger?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains("open");
+        navDropdowns.forEach((d) => d.classList.remove("open"));
+        if (!isOpen) dropdown.classList.add("open");
+      });
+      dropdown.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => {
+          dropdown.classList.remove("open");
+          topNav?.classList.remove("open");
+          mobileToggle?.setAttribute("aria-expanded", "false");
+        })
+      );
+    });
+    document.querySelectorAll(".nav-link").forEach((link) =>
+      link.addEventListener("click", () => {
+        topNav?.classList.remove("open");
+        mobileToggle?.setAttribute("aria-expanded", "false");
+      })
+    );
+    document.addEventListener("click", () => {
+      navDropdowns.forEach((d) => d.classList.remove("open"));
+      topNav?.classList.remove("open");
+      mobileToggle?.setAttribute("aria-expanded", "false");
+    });
+
+    const input = document.getElementById("input");
+    const output = document.getElementById("output");
+    const statusEl = document.getElementById("status");
+    const prettyBtn = document.getElementById("pretty");
+    const minifyBtn = document.getElementById("minify");
+    const clearBtn = document.getElementById("clear");
+
+    const setStatus = (msg, ok = true) => {
+      statusEl.textContent = msg || "";
+      statusEl.style.color = ok ? "#22c55e" : "#f87171";
+    };
+
+    prettyBtn.addEventListener("click", () => {
+      try {
+        const parsed = JSON.parse(input.value);
+        output.value = JSON.stringify(parsed, null, 2);
+        setStatus("Valid JSON. Pretty-printed.", true);
+      } catch (err) {
+        output.value = "";
+        setStatus(`Invalid JSON: ${err.message}`, false);
+      }
+    });
+
+    minifyBtn.addEventListener("click", () => {
+      try {
+        const parsed = JSON.parse(input.value);
+        output.value = JSON.stringify(parsed);
+        setStatus("Valid JSON. Minified.", true);
+      } catch (err) {
+        output.value = "";
+        setStatus(`Invalid JSON: ${err.message}`, false);
+      }
+    });
+
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      output.value = "";
+      setStatus("");
+    });
+  </script>
+</body>
+</html>
+

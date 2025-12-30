@@ -1,0 +1,71 @@
+    <section class="card" id="converter" aria-label="Conversion panel">
+      <div class="controls" style="justify-content: flex-end; padding: 0 0 8px;">
+        <button id="advanced-toggle" class="secondary small" type="button" style="background:#111827;border-color:#22c55e;color:#e5e7eb;">Show advanced options</button>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true" data-mode="json2csv">
+          <span>JSON → CSV</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-mode="csv2json">
+          <span>CSV → JSON</span>
+        </button>
+      </div>
+
+      <div class="grid">
+        <div class="panel">
+          <label for="input-area" id="input-label">JSON input</label>
+          <textarea id="input-area" class="textarea" placeholder='Paste JSON array of objects or load a file...'></textarea>
+          <div class="controls">
+            <label class="file-label">
+              <input type="file" id="file-input" accept=".json,.csv,text/csv,application/json,text/plain" />
+              <span>Upload file</span>
+            </label>
+            <button id="example-btn" class="secondary small" type="button">Example</button>
+            <button id="clear-btn" class="secondary" type="button">Clear</button>
+            <button id="convert-btn" class="primary" type="button">Convert</button>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="explode-toggle" class="advanced-item" />
+            <span class="advanced-item">Explode primitive arrays into child tables <span class="hint" title="Turns arrays like tags: ['a','b'] into a child table with _parent_row_id + value. Leave off for small, bounded arrays.">?</span></span>
+          </label>
+          <label class="toggle advanced-item">
+            <span>Child table prefix</span>
+            <input id="child-prefix" type="text" class="small" placeholder="e.g. child_" style="flex: 1; max-width: 200px;" />
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="replace-dots" class="advanced-item" />
+            <span class="advanced-item">Replace dots with underscores in child table names <span class="hint" title="If your source paths contain dots, replace them for safer table names (e.g., orders.items -> orders_items).">?</span></span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="unflatten-toggle" />
+            <span>CSV → JSON: unflatten dot paths to nested objects <span class="hint" title="Rebuild nested objects from dot-path headers (e.g., user.name). Mixed array/object paths will warn and be coerced.">?</span></span>
+          </label>
+          <label class="toggle">
+            <span>Delimiter</span>
+            <select id="delimiter-select" class="small" style="flex: 1; max-width: 160px;">
+              <option value=",">Comma (,)</option>
+              <option value=";">Semicolon (;)</option>
+              <option value="	">Tab (\t)</option>
+            </select>
+            <span class="hint" title="Choose the separator for CSV parsing/export.">?</span>
+          </label>
+          <div class="drag-hint">Tip: Drag & drop a .json or .csv file anywhere to load it.</div>
+        </div>
+
+        <div class="panel">
+          <label for="output-area" id="output-label">CSV output</label>
+          <textarea id="output-area" class="textarea" placeholder="Converted result will appear here..." readonly></textarea>
+          <div class="controls">
+            <button id="download-btn" class="secondary" type="button" disabled>Download</button>
+            <button id="copy-btn" class="secondary small" type="button" disabled>Copy</button>
+            <button id="download-all-btn" class="secondary small advanced-item" type="button" disabled>ZIP (all)</button>
+            <button id="schema-btn" class="secondary small advanced-item" type="button" disabled>Schema README</button>
+            <button id="sql-btn" class="secondary small advanced-item" type="button" disabled>SQL schema</button>
+          </div>
+          <div id="extras" class="extras" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+
